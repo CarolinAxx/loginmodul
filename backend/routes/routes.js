@@ -19,5 +19,19 @@ router.post('/signup', (request, response) =>{
     })
 })
 
-// router.get('/signin')
+router.get('/', (response) =>{
+    try {
+        response.json(signUpTemplateCopy.find());
+      } catch (error) {
+        response.json({ message: error });
+      }
+})
+
+router.get('/:userId', async (req, res) => {
+    try {
+      res.json(await signUpTemplateCopy.findById(req.params.userId));
+    } catch (error) {
+      res.json({ message: error });
+    }
+  });
 module.exports = router
