@@ -9,7 +9,8 @@ export default function Login(){
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('');
+    const [error, setError] = useState(false);
+    const [submit, setSubmit] = useState(false);
     
     let API_URL = `http://localhost:4000/app/signup`;
 
@@ -18,23 +19,47 @@ export default function Login(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("logged in");
-        setError(false);
-        try {
-            const result = await axios.get(`${API_URL}`);
-            setEmail(result.data);
+        if (email === '' || password === '') {
+            setError(true);
+        } else {
             navigate('./dashboard')
-        }
-        catch(error){
-            setError(true)
+            setSubmit(true);
+            setError(false);
         }
 
     };
+    const submitMessage = () =>{
+        return (
+            <div style={{
+                display: submit ? '': 'none',
+            }}>
+            <h3>Logged in</h3>
+
+            </div>
+        );
+    }
+
+    const errorMessage = () =>{
+        return (
+            <div style={{
+                display: error ? '': 'none',
+            }}>
+            <h3> Please enter all fields</h3>
+
+            </div>
+        );
+    }
     
     return (
         <form onSubmit={handleSubmit}>
         <div className="form-inner">
             <h2>Logga in här</h2>
-            <div className="error">{error}</div>
+           
+            <div>
+                {errorMessage()}
+                {submitMessage()}
+            </div>
+          
             
             <div className="form-group">
                 <label htmlFor="email">Email: </label>
